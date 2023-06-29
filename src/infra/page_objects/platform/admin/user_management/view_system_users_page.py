@@ -4,7 +4,7 @@ from typing import Literal
 class ViewSystemUsersPage :
     def __init__(self, page) :
         self.page = page
-        self.url = 'viewSystemUsers'
+        self.url = 'admin/viewSystemUsers'
         self.fold_unfold_button = page.get_by_role("button", name="")
         self.system_users_section = page.get_by_text("System UsersUsernameUser Role-- Select --Employee NameStatus-- Select -- Reset S")
         self.system_users_title = page.get_by_text("Username", exact=True)
