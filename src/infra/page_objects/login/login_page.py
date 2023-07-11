@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from playwright.async_api import Page, expect
 
 logging.basicConfig(level=logging.INFO)
@@ -93,15 +94,22 @@ class LoginPage:
     def footer(self, value):
         self._footer = value
 
+    @property
+    def error_message(self):
+        return self.page.get_by_text("Invalid credentials")
+    
+    @error_message.setter
+    def error_message(self, value):
+        self._error_message = value
+
     async def goto(self):
         await self.page.goto(self.url)
 
     
     async def verify_page_loaded(self):
         await expect(self.header).to_be_visible()
-        logging.info("header visible")
         await expect(self.login_title).to_be_visible() 
-        logging.info("title visible")
+        logging.info(f"{datetime.now()}: Login page loaded ")
 
     async def login(self, username: str, password: str):
         await self.fill_username(username)
@@ -110,12 +118,19 @@ class LoginPage:
 
     async def fill_username(self, username:str):
         await self.username_field.fill(username)
+        logging.info(f"{datetime.now()}: Username: {username} filled. ")
 
     async def fill_password(self, password: str):
         await self.password_field.fill(password)
+        logging.info(f"{datetime.now()}: Password filled")
 
     async def click_login_button(self):
         await self.login_button.click()
+        logging.info(f"{datetime.now()}: Login button clicked")
 
     async def click_forgot_password(self):
         await self.forgot_password_link.click()
+
+    async def verify_error_message_visible(self):
+        await expect(self.error_message).to_be_visible()
+        logging.info(f"{datetime.now()}: Error message appeared")

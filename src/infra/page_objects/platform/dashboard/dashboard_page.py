@@ -1,5 +1,8 @@
+import logging
+from datetime import datetime
 from playwright.async_api import Page, expect
 
+logging.basicConfig(level=logging.INFO)
 class DashboardPage :
     def __init__(self, page: Page) :
         self.page = page
@@ -18,5 +21,6 @@ class DashboardPage :
     
     async def verify_page_loaded(self):
         await expect(self.dashboard_title).to_be_visible()
+        logging.info(f"{datetime.now()}: Dashboard page loaded")
     
     
