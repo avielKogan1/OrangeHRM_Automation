@@ -1,23 +1,20 @@
 import pytest
-from ....src.infra.page_objects.login_page import LoginPage
-from playwright.sync_api import sync_playwright
+from infra.page_objects.login.login_page import LoginPage
+from playwright.async_api import async_playwright, Page, Browser
+import logging
 
 
-# def browser():
-#     with sync_playwright() as playwright:
-#         browser = playwright.chromium.launch()
-#         yield browser
-#         browser.close()
-
-# @pytest.fixture
-# def page(browser):
-#     page = browser.new_page()
-#     yield page
-#     page.close()
-
-async def test_perform_login():
-    page = await browser.new_page()
-    login_page = LoginPage(page)
-    await login_page.verify_page_loaded()
+def pytest_configure(config):
+    logging.basicConfig(level=logging.INFO)
+    root = logging.getLogger()
+    root.setLevel(logging.INFO)
 
 
+@pytest.mark.asyncio
+async def test_login_valid():
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        login_page = LoginPage(page)
+        await login_page.goto()
+        await login_page.verify_page_loaded()

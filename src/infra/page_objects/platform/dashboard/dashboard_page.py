@@ -1,7 +1,7 @@
-from playwright.async_api import expect
+from playwright.async_api import Page, expect
 
 class DashboardPage :
-    def __init__(self, page) :
+    def __init__(self, page: Page) :
         self.page = page
         self.url = 'dashboard/index'
         self.dashboard_title = page.get_by_role("heading", name="Dashboard")
