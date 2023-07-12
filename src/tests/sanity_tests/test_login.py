@@ -14,7 +14,7 @@ def pytest_configure(config):
 
 
 @pytest.mark.asyncio
-async def test_login_with_valid_credentials():
+async def test_login_with_valid_credentials(datafile):
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
@@ -24,6 +24,10 @@ async def test_login_with_valid_credentials():
         login_page = LoginPage(page)
         # Initializing Dashboard page object
         dashboard_page = DashboardPage(page)
+
+        # Retrieving test data from external file fixture "datafile"
+        jsondata = datafile
+        logging.info(f"Test data file received: User: {jsondata}")
 
         # Go to login page
         await login_page.goto()
