@@ -9,6 +9,7 @@ class LoginPage:
     def __init__(self, page: Page):
         self.page = page
         self.url = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+        logging.info(f"{datetime.now()}: Login page initialized")
 
     @property
     def page_url(self):

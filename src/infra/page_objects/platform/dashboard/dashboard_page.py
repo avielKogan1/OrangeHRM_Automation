@@ -15,6 +15,7 @@ class DashboardPage :
         self.employees_on_leave_section = page.get_by_text("Employees on Leave Today")
         self.employees_distribution_by_unit = page.get_by_text("Employee Distribution by Sub Unit")
         self.employees_distribution_by_location = page.get_by_text("Employee Distribution by Location")
+        logging.info(f"{datetime.now()}: Dashboard page initialized")
     
     async def goto(self) :
         await self.page.goto(self.url)

@@ -4,7 +4,7 @@ import logging
 from src.infra.page_objects.login.login_page import LoginPage
 from src.infra.page_objects.platform.dashboard.dashboard_page import DashboardPage
 from src.tests.test_data.test_data import User
-from playwright.async_api import async_playwright, Page, Browser, BrowserContext
+from playwright.async_api import async_playwright
 
 
 def pytest_configure(config):
@@ -18,9 +18,11 @@ async def test_login_with_valid_credentials():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
+        # Initializing user object
         user = User()
-        logging.info(f"user created : {user.username}")
+        # Initializing Login page object
         login_page = LoginPage(page)
+        # Initializing Dashboard page object
         dashboard_page = DashboardPage(page)
 
         # Go to login page
@@ -48,11 +50,12 @@ async def test_login_with_invalid_credentials():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
+        # Initializing user object
         user = User()
-        logging.info(f"user created : {user.username}")
+        # Initializing Login page object
         login_page = LoginPage(page)
-        dashboard_page = DashboardPage(page)
-
+        logging.info(f"user created : {user.username}")
+        
         # Go to login page
         await login_page.goto()
 
