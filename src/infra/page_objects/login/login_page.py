@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from src.helpers.helper_methods import current_full_time
 from playwright.async_api import Page, expect
 
 logging.basicConfig(level=logging.INFO)
@@ -9,7 +9,7 @@ class LoginPage:
     def __init__(self, page: Page):
         self.page = page
         self.url = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
-        logging.info(f"{datetime.now()}: Login page initialized")
+        logging.info(f"{current_full_time()}: Login page initialized")
 
     @property
     def page_url(self):
@@ -110,7 +110,7 @@ class LoginPage:
     async def verify_page_loaded(self):
         await expect(self.header).to_be_visible()
         await expect(self.login_title).to_be_visible() 
-        logging.info(f"{datetime.now()}: Login page loaded ")
+        logging.info(f"{current_full_time()}: Login page loaded ")
 
     async def login(self, username: str, password: str):
         await self.fill_username(username)
@@ -119,19 +119,19 @@ class LoginPage:
 
     async def fill_username(self, username:str):
         await self.username_field.fill(username)
-        logging.info(f"{datetime.now()}: Username: {username} filled. ")
+        logging.info(f"{current_full_time()}: Username: {username} filled. ")
 
     async def fill_password(self, password: str):
         await self.password_field.fill(password)
-        logging.info(f"{datetime.now()}: Password filled")
+        logging.info(f"{current_full_time()}: Password filled")
 
     async def click_login_button(self):
         await self.login_button.click()
-        logging.info(f"{datetime.now()}: Login button clicked")
+        logging.info(f"{current_full_time()}: Login button clicked")
 
     async def click_forgot_password(self):
         await self.forgot_password_link.click()
 
     async def verify_error_message_visible(self):
         await expect(self.error_message).to_be_visible()
-        logging.info(f"{datetime.now()}: Error message appeared")
+        logging.info(f"{current_full_time()}: Error message appeared")

@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from src.helpers.helper_methods import current_full_time
 from playwright.async_api import Page, expect
 
 logging.basicConfig(level=logging.INFO)
@@ -15,13 +15,13 @@ class DashboardPage :
         self.employees_on_leave_section = page.get_by_text("Employees on Leave Today")
         self.employees_distribution_by_unit = page.get_by_text("Employee Distribution by Sub Unit")
         self.employees_distribution_by_location = page.get_by_text("Employee Distribution by Location")
-        logging.info(f"{datetime.now()}: Dashboard page initialized")
+        logging.info(f"{current_full_time()}: Dashboard page initialized")
     
     async def goto(self) :
         await self.page.goto(self.url)
     
     async def verify_page_loaded(self):
         await expect(self.dashboard_title).to_be_visible()
-        logging.info(f"{datetime.now()}: Dashboard page loaded")
+        logging.info(f"{current_full_time()}: Dashboard page loaded")
     
     

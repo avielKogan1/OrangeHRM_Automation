@@ -2,6 +2,7 @@ import pytest
 import logging
 from src.infra.page_objects.login.login_page import LoginPage
 from src.infra.page_objects.platform.dashboard.dashboard_page import DashboardPage
+from src.helpers.helper_methods import current_full_time
 from playwright.async_api import async_playwright
 
 
@@ -21,7 +22,7 @@ async def test_login_with_valid_credentials(datafile):
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context()
         await context.tracing.start(screenshots=True, snapshots=True, sources=True)
-        logging.info("Tracing started")
+        logging.info(f"{current_full_time()}: Tracing started")
         page = await context.new_page()
 
         # Initializing Login page object
@@ -48,7 +49,7 @@ async def test_login_with_valid_credentials(datafile):
         await dashboard_page.verify_page_loaded()
 
         await context.tracing.stop(path = "test_login_with_valid_credentials.zip")
-        logging.info("Tracing stopped")
+        logging.info(f"{current_full_time()}: Tracing stopped")
         
             
 @pytest.mark.asyncio
@@ -60,7 +61,7 @@ async def test_login_with_invalid_credentials(datafile):
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context()
         await context.tracing.start(screenshots=True, snapshots=True, sources=True)
-        logging.info("Tracing started")
+        logging.info(f"{current_full_time()}: Tracing started")
         page = await context.new_page()
 
         # Initializing Login page object
@@ -86,7 +87,7 @@ async def test_login_with_invalid_credentials(datafile):
         await login_page.verify_error_message_visible()
 
         await context.tracing.stop(path = "test_login_with_invalid_credentials.zip")
-        logging.info("Tracing stopped")
+        logging.info(f"{current_full_time()}: Tracing stopped")
         
               
         
