@@ -19,7 +19,10 @@ async def test_login_with_valid_credentials(datafile):
         jsondata = datafile
 
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
+        context = await browser.new_context()
+        await context.tracing.start(screenshots=True, snapshots=True, sources=True)
+        logging.info("Tracing started")
+        page = await context.new_page()
 
         # Initializing Login page object
         login_page = LoginPage(page)
@@ -43,6 +46,9 @@ async def test_login_with_valid_credentials(datafile):
 
         # Verify Dashboard page loaded
         await dashboard_page.verify_page_loaded()
+
+        await context.tracing.stop(path = "test_login_with_valid_credentials.zip")
+        logging.info("Tracing stopped")
         
             
 @pytest.mark.asyncio
@@ -52,7 +58,10 @@ async def test_login_with_invalid_credentials(datafile):
         jsondata = datafile
 
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
+        context = await browser.new_context()
+        await context.tracing.start(screenshots=True, snapshots=True, sources=True)
+        logging.info("Tracing started")
+        page = await context.new_page()
 
         # Initializing Login page object
         login_page = LoginPage(page)
@@ -75,6 +84,9 @@ async def test_login_with_invalid_credentials(datafile):
 
         # Verify error message appears
         await login_page.verify_error_message_visible()
+
+        await context.tracing.stop(path = "test_login_with_invalid_credentials.zip")
+        logging.info("Tracing stopped")
         
               
         

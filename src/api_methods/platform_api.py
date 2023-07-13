@@ -6,8 +6,10 @@ from playwright.async_api import APIRequestContext,APIResponse
 class PlatformAPI :
     def __init__(self, api_context: APIRequestContext) -> None:
         self.api_context = api_context
+    
 
-    async def auth_token(self, request_endpoint: str, expected_status: int, expected_status_text: str):
+    # The auth-token generation request API call isn't publicly accessed. It's just a high level mock up
+    async def generate_auth_token(self, request_endpoint: str, expected_status: int, expected_status_text: str):
         response: APIResponse = self.api_context.post() 
 
         validate_response_status(response,expected_status,expected_status_text)
