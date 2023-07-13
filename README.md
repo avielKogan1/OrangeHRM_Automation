@@ -13,3 +13,8 @@ Test Data: Test Data is stored in dedicated json files here: src/tests/test_data
 For example : pytest --datafile=src/tests/test_data/user_data.json
 
 Debugging: Playwright traces are recorded and also loggers were added in critical places.
+
+How to execute test suites? 
+Please make sure you're in the root directory of the project and run the following command: "make [suite-name]"
+For example: "make sanity-tests"
+
