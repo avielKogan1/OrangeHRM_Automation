@@ -1,9 +1,7 @@
 import pytest
-from pytest_steps import test_steps, optional_step
 import logging
 from src.infra.page_objects.login.login_page import LoginPage
 from src.infra.page_objects.platform.dashboard.dashboard_page import DashboardPage
-from src.tests.test_data.test_data import User
 from playwright.async_api import async_playwright
 
 
@@ -13,21 +11,20 @@ def pytest_configure(config):
     root.setLevel(logging.INFO)
 
 
+
 @pytest.mark.asyncio
 async def test_login_with_valid_credentials(datafile):
     async with async_playwright() as p:
+        # Retrieving test data from external file fixture "datafile"
+        jsondata = datafile
+
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
-        # Initializing user object
-        user = User()
+
         # Initializing Login page object
         login_page = LoginPage(page)
         # Initializing Dashboard page object
         dashboard_page = DashboardPage(page)
-
-        # Retrieving test data from external file fixture "datafile"
-        jsondata = datafile
-        logging.info(f"Test data file received: User: {jsondata}")
 
         # Go to login page
         await login_page.goto()
@@ -35,12 +32,11 @@ async def test_login_with_valid_credentials(datafile):
         # Verify Login Page loaded
         await login_page.verify_page_loaded()
         
-
         # Fill in user name
-        await login_page.fill_username(user.username)
+        await login_page.fill_username(jsondata["username"])
 
         # Fill in password
-        await login_page.fill_password(user.password)
+        await login_page.fill_password(jsondata["password"])
 
         # Click Login button
         await login_page.click_login_button()
@@ -50,15 +46,16 @@ async def test_login_with_valid_credentials(datafile):
         
             
 @pytest.mark.asyncio
-async def test_login_with_invalid_credentials():
+async def test_login_with_invalid_credentials(datafile):
     async with async_playwright() as p:
+       # Retrieving test data from external file fixture "datafile"
+        jsondata = datafile
+
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
-        # Initializing user object
-        user = User()
+
         # Initializing Login page object
         login_page = LoginPage(page)
-        logging.info(f"user created : {user.username}")
         
         # Go to login page
         await login_page.goto()
@@ -68,10 +65,10 @@ async def test_login_with_invalid_credentials():
         
 
         # Fill in user name
-        await login_page.fill_username("invalid")
+        await login_page.fill_username(f"{jsondata['username']} invalid")
 
         # Fill in password
-        await login_page.fill_password("invalid")
+        await login_page.fill_password(f"{jsondata['password']} invalid")
 
         # Click Login button
         await login_page.click_login_button()
